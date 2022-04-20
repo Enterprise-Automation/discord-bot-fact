@@ -48,17 +48,18 @@ let factRepo = {
         });
 
     },
-    insert: function (newData, resolve, reject) {
-        fs.readFile(FILE_NAME, function (err, data) {
+    insert: function (newFact, resolve, reject) {
+        const myArray = newFact.split("+");
+        console.log(myArray[0]);
+        connection.query(`INSERT fact_table 
+        (fact, topic) 
+        VALUES
+          ('${myArray[0]}', '${myArray[1]}')`, function (err, result, fields) {
             if (err) {
                 reject(err)
-            } else {
-                connection.query(` CREATE fact_table 'sammy'@'localhost' IDENTIFIED BY 'password ${id}`, function (err, result, fields) {
-                    if (err) throw err;
-                    resolve(result);
-                });
             }
-        })
+            resolve(result);
+        });
     },
     delete: function (id, resolve, reject) {
         fs.readFile(FILE_NAME, function (err, data) {
@@ -72,5 +73,6 @@ let factRepo = {
     },
 
 }
+
 
 module.exports = factRepo

@@ -66,8 +66,8 @@ router.get('/searchtopic/:topic', function (req, res, next) {
         next(err)
     })
 })
-router.post('/', function (req, res, next) {
-    factRepo.insert(req.body, function (data) {
+router.post('/addFact/:newFact', function (req, res, next) {
+    factRepo.insert(req.params.newFact, function (data) {
         if (data) {
             res.status(201).json({
                 'status': 201,
