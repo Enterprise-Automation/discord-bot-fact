@@ -1,7 +1,7 @@
 var express = require('express');
 const app = express();
 app.use(express.json());
-let factRepo = require('./factRepo/factRepo.js')
+let factRepo = require('./sql.js')
 
 let router = express.Router()
 
@@ -42,8 +42,8 @@ router.get('/:id', function (req, res, next) {
         next(err)
     })
 })
-router.get('/searchtopic', function (req, res, next) {
-    factRepo.searchTopic(req.params.topic, function (data) {
+router.get('/searchtopic/:topic', function (req, res, next) {
+    factRepo.getByTopic(req.params.topic, function (data) {
         if (data) {
             res.status(200).json({
                 'status': 200,
@@ -80,7 +80,7 @@ router.post('/', function (req, res, next) {
         next(err)
     })
 })
-app.use('/api/', router)
+app.use('/facts/', router)
 app.listen(3000, () => {
     console.log('Node server is running on port 3000');
 })
