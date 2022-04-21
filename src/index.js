@@ -2,7 +2,6 @@ var express = require('express');
 const app = express();
 app.use(express.json());
 let factRepo = require('./sql/sql.js')
-const function_module = require('./validator.js');
 
 let router = express.Router()
 
@@ -53,7 +52,7 @@ router.get('/:id', function (req, res, next) {
     })
 })
 router.get('/searchtopic/:topic', function (req, res, next) {
-    factRepo.getByTopic(req.params.topic, function (data) {
+    factRepo.searchTopic(req.params.topic, function (data) {
         if (data) {
             res.status(200).json({
                 'status': 200,
@@ -77,7 +76,7 @@ router.get('/searchtopic/:topic', function (req, res, next) {
     })
 })
 router.post('/addFact/:newFact', function (req, res, next) {
-    factRepo.insert(req.params.newFact, function (data) {
+    factRepo.newFact(req.params.newFact, function (data) {
         if (data) {
             res.status(201).json({
                 'status': 201,

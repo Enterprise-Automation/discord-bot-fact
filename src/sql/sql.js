@@ -30,7 +30,7 @@ let factRepo = {
         });
 
     },
-    getByTopic: function (topic, resolve, reject) {
+    searchTopic: function (topic, resolve, reject) {
 
         connection.query(`SELECT * FROM fact_table WHERE topic="${topic}"`, function (err, result, fields) {
             if (err) {

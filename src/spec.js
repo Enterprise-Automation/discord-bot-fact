@@ -1,9 +1,9 @@
 // Bot API action constants
 module.exports = Object.freeze({
-    identifier: "microk8s",
-    actions: ["create", "list", "details", "delete", "power_on", "power_off"],
+    identifier: "facts",
+    actions: ["get", "getById", "searchTopic", "newFact", "insert", "delete"],
     schema: {
-        create: {
+        searchTopic: {
             arg_count: 1,
             args: [
                 {
@@ -15,47 +15,35 @@ module.exports = Object.freeze({
                 }
             ]
         },
-        list: {
+        get: {
             arg_count: 0,
             args: []
         },
+        insert: {
+            arg_count: 1,
+            args: [
+                {
+                    name: "name",
+                    type: "string",
+                    min: 3,
+                    max: 15,
+                    pattern: "alphanumeric"
+                }
+            ]
+        },
+        getById: {
+            arg_count: 1,
+            args: [
+                {
+                    name: "name",
+                    type: "integer",
+                    min: 1,
+                    max: 15,
+                    pattern: "alphanumeric"
+                }
+            ]
+        },
         delete: {
-            arg_count: 1,
-            args: [
-                {
-                    name: "name",
-                    type: "string",
-                    min: 3,
-                    max: 15,
-                    pattern: "alphanumeric"
-                }
-            ]
-        },
-        details: {
-            arg_count: 1,
-            args: [
-                {
-                    name: "name",
-                    type: "string",
-                    min: 3,
-                    max: 15,
-                    pattern: "alphanumeric"
-                }
-            ]
-        },
-        power_on: {
-            arg_count: 1,
-            args: [
-                {
-                    name: "name",
-                    type: "string",
-                    min: 3,
-                    max: 15,
-                    pattern: "alphanumeric"
-                }
-            ]
-        },
-        power_off: {
             arg_count: 1,
             args: [
                 {
