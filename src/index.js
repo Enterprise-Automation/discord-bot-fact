@@ -1,19 +1,22 @@
 var express = require('express');
 const app = express();
 app.use(express.json());
+const fs = require('fs')
 let factRepo = require('./sql/sql.js')
+const path = require('path')
 
 let router = express.Router()
 
-router.get('/validate/:command', function (req, res, next) {
-    var getResponse = function_module.func(req);
-    getResponse.then((response) => {
-        res.send(response);
-    }).catch(err => {
-        res.send(err);
-    });
-});
 
+
+// router.get('/validate/:command', function (req, res, next) {
+//     var getResponse = function_module.func(req);
+//     getResponse.then((response) => {
+//         res.send(response);
+//     }).catch(err => {
+//         res.send(err);
+//     });
+// });
 router.get('/', function (req, res, next) {
     factRepo.get(function (data) {
         res.status(200).json({
@@ -114,7 +117,12 @@ router.get('/random', function (req, res, next) {
         next(err);
     });
 });
-app.use('/facts/', router)
+fs.readdirSync(path.join(__dirname, "routes")).forEach(function (file) {
+    if (file[0] === ".") {
+        return;
+    }
+    require(path.join(__dirname, "routes", file))(app);
+});
 app.listen(3000, () => {
     console.log('Node server is running on port 3000');
 })

@@ -1,3 +1,4 @@
+
 // **
 //  * @openapi
 //  * /api/validate/{command}:
@@ -15,10 +16,9 @@
 //  *         description: Returns JSON document with validation results
 //  */
 
+var function_module = require('../routes-functions/validatorFuncs.js')
 module.exports = function (app) {
     app.get('/api/validate/:command', (req, res, next) => {
-        var function_module = require('../route-functions/validatorFuncs.js')
-
         var getResponse = function_module.func(req)
         getResponse.then((response) => {
             res.send(response)
