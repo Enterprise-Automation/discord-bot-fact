@@ -9,14 +9,6 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
-
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-});
-
-
-
 let factRepo = {
     get: function (resolve, reject) {
 
@@ -60,6 +52,13 @@ let factRepo = {
             }
             resolve(result);
         });
+    },
+    getRandom: function (resolve, reject) {
+        let r = connection.query(`SELECT COUNT(id) FROM fact_table`, function (err, result, fields) {
+            console.log(result)
+            return 1;
+        });
+        console.log(r)
     },
     delete: function (id, resolve, reject) {
         fs.readFile(FILE_NAME, function (err, data) {
