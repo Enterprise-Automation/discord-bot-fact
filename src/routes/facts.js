@@ -16,9 +16,9 @@
 //  *         description: Returns JSON document with validation results
 //  */
 
-var sql = require('../sql/sql')
+var sql = require('../routes-functions/sql')
 module.exports = function (app) {
-    app.get('/api/comand/:command', (req, res, next) => {
+    app.get('/api/command/:command', (req, res, next) => {
 
         var getResponse = sql.func(req);
         getResponse.then((response) => {
