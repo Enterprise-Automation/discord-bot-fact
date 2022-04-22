@@ -16,11 +16,11 @@
 //  *         description: Returns JSON document with validation results
 //  */
 
-var function_module = require('../routes-functions/validatorFuncs.js')
+var sql = require('../sql/sql')
 module.exports = function (app) {
-    app.get('/api/validate/:command', (req, res, next) => {
+    app.get('/api/comand/:command', (req, res, next) => {
 
-        var getResponse = function_module.func(req);
+        var getResponse = sql.func(req);
         getResponse.then((response) => {
             res.send(response)
         }).catch(err => {
