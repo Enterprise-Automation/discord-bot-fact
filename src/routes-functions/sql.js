@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const Promise = require("promise")
 
-
+function getRandomInt(max) { return Math.floor(Math.random() * max); } console.log(getRandomInt(3));
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -20,48 +20,54 @@ exports.func = req => {
 
 
 
-        switch (params[0]) {
+        switch (params[1]) {
             case "get":
                 connection.query(`SELECT * FROM fact_table`, function (err, result, fields) {
                     if (err) {
                         reject(err)
                     }
                     console.log(result);
-                    resolve(`"status": "success", "status_message": "sending back fact", "discord_message": "` + result[0].HTML_URL + `"`);
+                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
                 });
                 break;
             case "getById":
                 query = `SELECT * FROM fact_table WHERE id=?`;
-                connection.query(query, params[1], function (err, result, fields) {
+                connection.query(query, params[2], function (err, result, fields) {
                     if (err) {
                         reject(err)
                     }
 
                     console.log(result);
-                    resolve(`"status": "success", "status_message": "sending back fact", "discord_message": "` + result[0].HTML_URL + `"`);
+                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
 
                 });
 
                 break;
             case "getByTopic":
                 query = `SELECT * FROM fact_table WHERE topic=?`
-                connection.query(query, params[1], function (err, result, fields) {
+                connection.query(query, params[2], function (err, result, fields) {
                     if (err) {
                         reject(err)
                     }
 
                     console.log(result);
-                    resolve(`"status": "success", "status_message": "sending back fact", "discord_message": "` + result[0].HTML_URL + `"`);
+                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
 
                 });
 
                 break;
             case "random":
-                query = `SELECT COUNT(id) FROM fact_table`
-                connection.query(query, function (err, result, fields) {
-                    console.log(result)
+                query = `SELECT * FROM fact_table WHERE id=?`;
+                connection.query(query, params[2], function (err, result, fields) {
+                    if (err) {
+                        reject(err)
+                    }
+
+                    console.log(result);
+                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[getRandomInt].fact });
+
                 });
-                console.log(r)
+
                 break
         }
         // connection.end()
