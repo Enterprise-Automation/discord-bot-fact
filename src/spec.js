@@ -1,9 +1,9 @@
 // Bot API action constants
 module.exports = Object.freeze({
     identifier: "facts",
-    actions: ["get", "getById", "searchTopic", "newFact", "insert", "delete"],
+    actions: ["get", "getById", "getByTopic", "newFact", "insert", "delete"],
     schema: {
-        searchTopic: {
+        getByTopic: {
             arg_count: 1,
             args: [
                 {
