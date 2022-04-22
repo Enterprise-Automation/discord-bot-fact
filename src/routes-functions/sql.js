@@ -16,7 +16,7 @@ exports.func = req => {
         let params = req.params.command.split(",");
 
         let query = null
-        console.log("params 0 = " + params);
+        console.log("request = " + params);
 
 
 
@@ -26,7 +26,8 @@ exports.func = req => {
                     if (err) {
                         reject(err)
                     }
-                    resolve(result);
+                    console.log(result);
+                    resolve(`"status": "success", "status_message": "sending back fact", "discord_message": "` + result[0].HTML_URL + `"`);
                 });
                 break;
             case "getById":
@@ -35,7 +36,9 @@ exports.func = req => {
                     if (err) {
                         reject(err)
                     }
-                    resolve(result);
+
+                    console.log(result);
+                    resolve(`"status": "success", "status_message": "sending back fact", "discord_message": "` + result[0].HTML_URL + `"`);
 
                 });
 
@@ -46,87 +49,25 @@ exports.func = req => {
                     if (err) {
                         reject(err)
                     }
-                    resolve(result);
+
+                    console.log(result);
+                    resolve(`"status": "success", "status_message": "sending back fact", "discord_message": "` + result[0].HTML_URL + `"`);
 
                 });
 
                 break;
-            default:
+            case "random":
                 query = `SELECT COUNT(id) FROM fact_table`
                 connection.query(query, function (err, result, fields) {
                     console.log(result)
                 });
                 console.log(r)
+                break
         }
+        // connection.end()
     })
 }
 
 
 
 
-// let factRepo = {
-//     get: function (resolve, reject) {
-
-//         connection.query(`SELECT * FROM fact_table`, function (err, result, fields) {
-//             if (err) {
-//                 reject(err)
-//             }
-//             resolve(result);
-//         });
-
-//     },
-//     getById: function (id, resolve, reject) {
-
-//         connection.query(`SELECT * FROM fact_table WHERE id=${id}`, function (err, result, fields) {
-//             if (err) {
-//                 reject(err)
-//             }
-//             resolve(result);
-//         });
-
-//     },
-//     searchTopic: function (topic, resolve, reject) {
-
-//         connection.query(`SELECT * FROM fact_table WHERE topic="${topic}"`, function (err, result, fields) {
-//             if (err) {
-//                 reject(err)
-//             }
-//             resolve(result);
-//         });
-
-//     },
-//     newFact: function (newFact, resolve, reject) {
-//         const myArray = newFact.split("+");
-//         console.log(myArray[0]);
-//         connection.query(`INSERT fact_table 
-//         (fact, topic) 
-//         VALUES
-//           ('${myArray[0]}', '${myArray[1]}')`, function (err, result, fields) {
-//             if (err) {
-//                 reject(err)
-//             }
-//             resolve(result);
-//         });
-//     },
-//     getRandom: function (resolve, reject) {
-//         let r = connection.query(`SELECT COUNT(id) FROM fact_table`, function (err, result, fields) {
-//             console.log(result)
-//             return 1;
-//         });
-//         console.log(r)
-//     },
-//     delete: function (id, resolve, reject) {
-//         fs.readFile(FILE_NAME, function (err, data) {
-//             if (err) {
-//                 reject(err)
-//             } else {
-
-
-//             }
-//         })
-//     },
-
-// }
-
-
-// module.exports = factRepo
