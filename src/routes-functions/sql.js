@@ -26,15 +26,18 @@ exports.func = req => {
 
 
         switch (params[1]) {
-            case "get":
-                connection.query(`SELECT * FROM fact_table`, function (err, result, fields) {
-                    if (err) {
-                        reject(err)
-                    }
-                    console.log(result);
-                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
-                });
+            case "owner":
+                resolve({ "status": "success", "status_message": "Get owner", "discord_message": "Heisenberg" });
                 break;
+            // case "get":
+            //     connection.query(`SELECT * FROM fact_table`, function (err, result, fields) {
+            //         if (err) {
+            //             reject(err)
+            //         }
+            //         console.log(result);
+            //         resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
+            //     });
+            //     break;
             case "getById":
                 query = `SELECT * FROM fact_table WHERE id=?`;
                 connection.query(query, params[2], function (err, result, fields) {
@@ -75,19 +78,27 @@ exports.func = req => {
 
                 break;
             case "insert":
-
-
                 query = `INSERT INTO fact_table
-        (fact, topic, ) 
-        VALUES
-          (?, ?)`;
+                (fact,topic) 
+                 VALUES (?, ?)`;
 
-                connection.query(query, [params[1], params[2]], function (err, result, fields) {
+                connection.query(query, [params[2], params[3]], function (err, result, fields) {
                     if (err) {
                         reject(err)
                     }
-                    resolve({ "status": "success", "status_message": "getting fact", "discord_message": "insert" });
+                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "uploaded" + result });
                 });
+                break;
+            case "actions":
+                resolve({
+                    "status": "success", "status_message": "Get all actions", "discord_message":
+                        `
+                'Actions'
+                Fact By Topic: 'getByTopic topic'
+                Insert New Fact: 'insert fact topic'
+                Owner: 'owner'
+                Fact By Id: 'getById' 
+                Random Fact: 'random'` });
                 break;
         }
         // connection.end()
