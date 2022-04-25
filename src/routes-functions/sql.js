@@ -1,7 +1,12 @@
 const mysql = require('mysql');
 const Promise = require("promise")
 
-function getRandomInt(max) { return Math.floor(Math.random() * max); } console.log(getRandomInt(3));
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -57,18 +62,33 @@ exports.func = req => {
 
                 break;
             case "random":
-                query = `SELECT * FROM fact_table WHERE id=?`;
-                connection.query(query, params[2], function (err, result, fields) {
+                query = `SELECT * FROM fact_table`;
+                connection.query(`SELECT * FROM fact_table`, function (err, result, fields) {
                     if (err) {
                         reject(err)
                     }
 
                     console.log(result);
-                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[getRandomInt].fact });
+                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[getRandomInt(0, result.length)].fact });
 
                 });
 
-                break
+                break;
+            case "insert":
+
+
+                query = `INSERT INTO fact_table
+        (fact, topic, ) 
+        VALUES
+          (?, ?)`;
+
+                connection.query(query, [params[1], params[2]], function (err, result, fields) {
+                    if (err) {
+                        reject(err)
+                    }
+                    resolve({ "status": "success", "status_message": "getting fact", "discord_message": "insert" });
+                });
+                break;
         }
         // connection.end()
     })
