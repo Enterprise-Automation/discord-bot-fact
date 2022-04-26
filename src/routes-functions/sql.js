@@ -91,9 +91,11 @@ exports.func = req => {
                 });
                 break;
             case "delete":
-                query = `DELETE FROM fact_table
-                (fact,topic) 
-                 VALUES (?, ?)`;
+                if (req.get("user") != "EAS-Harrison") {
+                    resolve({ "status": "success", "status_message": "Not Authorised", "discord_message": "User not authorised to delete fact" });
+                    break;
+                }
+                query = `DELETE FROM fact_table WHERE fact=? AND topic=?`
                 params.shift()
                 params.shift()
                 var fact = params.join(" ").split("|")
@@ -102,7 +104,7 @@ exports.func = req => {
                         console.log(err)
                         reject(err)
                     }
-                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "Succesfully inserted fact" });
+                    resolve({ "status": "success", "status_message": "Fact deleted", "discord_message": "Succesfully deleted fact" });
                 });
                 break;
             case "actions":
