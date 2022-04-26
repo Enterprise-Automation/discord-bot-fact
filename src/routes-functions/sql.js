@@ -1,3 +1,4 @@
+const { Admin } = require('mongodb');
 const mysql = require('mysql');
 const Promise = require("promise")
 
@@ -70,10 +71,7 @@ exports.func = req => {
                     if (err) {
                         reject(err)
                     }
-
-                    console.log(result);
                     resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[getRandomInt(0, result.length)].fact });
-
                 });
 
                 break;
@@ -81,24 +79,43 @@ exports.func = req => {
                 query = `INSERT INTO fact_table
                 (fact,topic) 
                  VALUES (?, ?)`;
-
-                connection.query(query, [params[2], params[3]], function (err, result, fields) {
+                params.shift()
+                params.shift()
+                var fact = params.join(" ").split("|")
+                connection.query(query, [fact[0], fact[1]], function (err, result, fields) {
                     if (err) {
+                        console.log(err)
                         reject(err)
                     }
-                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "uploaded" + result });
+                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "Succesfully inserted fact" });
+                });
+                break;
+            case "delete":
+                query = `DELETE FROM fact_table
+                (fact,topic) 
+                 VALUES (?, ?)`;
+                params.shift()
+                params.shift()
+                var fact = params.join(" ").split("|")
+                connection.query(query, [fact[0], fact[1]], function (err, result, fields) {
+                    if (err) {
+                        console.log(err)
+                        reject(err)
+                    }
+                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "Succesfully inserted fact" });
                 });
                 break;
             case "actions":
                 resolve({
                     "status": "success", "status_message": "Get all actions", "discord_message":
-                        `
-                'Actions'
+
+                        `'Actions'
                 Fact By Topic: 'getByTopic topic'
-                Insert New Fact: 'insert fact topic'
+                Insert New Fact: 'insert fact |topic'
                 Owner: 'owner'
                 Fact By Id: 'getById' 
-                Random Fact: 'random'` });
+                Random Fact: 'random'
+                Delete Fact 'delete fact topic'` });
                 break;
         }
         // connection.end()
