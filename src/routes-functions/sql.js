@@ -28,7 +28,7 @@ exports.func = req => {
 
         switch (params[1]) {
             case "owner":
-                resolve({ "status": "success", "status_message": "Get owner", "discord_message": "Heisenberg" });
+                resolve({ "status": "success", "status_message": "Get owner", "discord_message": "https://tenor.com/view/walter-white-walter-hartwell-white-sr-heisenberg-bryan-cranston-gif-16636350" });
                 break;
             // case "get":
             //     connection.query(`SELECT * FROM fact_table`, function (err, result, fields) {
@@ -39,29 +39,32 @@ exports.func = req => {
             //         resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
             //     });
             //     break;
-            case "getById":
-                query = `SELECT * FROM fact_table WHERE id=?`;
-                connection.query(query, params[2], function (err, result, fields) {
-                    if (err) {
-                        reject(err)
-                    }
+            // case "getById":
+            //     query = `SELECT * FROM fact_table WHERE id=?`;
+            //     connection.query(query, params[2], function (err, result, fields) {
+            //         if (err) {
+            //             reject(err)
+            //         }
 
-                    console.log(result);
-                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
+            //         console.log(result);
+            //         resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
 
-                });
+            //     });
 
-                break;
-            case "getByTopic":
+            // break;
+            case "topic":
                 query = `SELECT * FROM fact_table WHERE topic=?`
                 connection.query(query, params[2], function (err, result, fields) {
                     if (err) {
                         reject(err)
                     }
-
-                    console.log(result);
-                    resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[0].fact });
-
+                    try {
+                        console.log(result);
+                        resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[getRandomInt(0, result.length)].fact });
+                    }
+                    catch (error) {
+                        reject({ "status": "failed", "status_message": "can't resolve query", "discord_message": "Can't find a fact with the topic of " + params[2] + ".Would you like to add one using ____|" + params[2] });
+                    }
                 });
 
                 break;
@@ -75,7 +78,7 @@ exports.func = req => {
                 });
 
                 break;
-            case "insert":
+            case "add":
                 query = `INSERT INTO fact_table
                 (fact,topic) 
                  VALUES (?, ?)`;
@@ -87,12 +90,12 @@ exports.func = req => {
                         console.log(err)
                         reject(err)
                     }
-                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "Succesfully inserted fact" });
+                    resolve({ "status": "success", "status_message": "Fact added", "discord_message": "Succesfully added fact" });
                 });
                 break;
             case "delete":
                 if (req.get("user") != "EAS-Harrison") {
-                    resolve({ "status": "success", "status_message": "Not Authorised", "discord_message": "User not authorised to delete fact" });
+                    resolve({ "status": "success", "status_message": "Not Authorised", "discord_message": `User "${req.get("user")}" not authorised to delete fact` });
                     break;
                 }
                 query = `DELETE FROM fact_table WHERE fact=? AND topic=?`
@@ -112,12 +115,11 @@ exports.func = req => {
                     "status": "success", "status_message": "Get all actions", "discord_message":
 
                         `'Actions'
-                Fact By Topic: 'getByTopic topic'
-                Insert New Fact: 'insert fact |topic'
-                Owner: 'owner'
-                Fact By Id: 'getById' 
+                Fact By Topic(JavaScript,History,Animals,EAS,Geography): 'topic topic'
+                Insert New Fact: 'add fact |topic'
+                Owner: 'owner' 
                 Random Fact: 'random'
-                Delete Fact 'delete fact topic'` });
+                Delete Fact (Harrison only) 'delete fact |topic'` });
                 break;
         }
         // connection.end()
