@@ -16,7 +16,7 @@ function arrayToString(array) {
         stringArray = stringArray + "Topic: " + array[i]["topic"] + " - " + array[i]["count(*)"] + "\n"
     }
 
-    return stringArry;
+    return stringArray;
 }
 var connection = mysql.createConnection({
     host: 'localhost',
