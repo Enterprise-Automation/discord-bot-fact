@@ -1,3 +1,5 @@
+var process = require('process');
+
 let query = ""
 module.exports = function (connection, params, resolve, reject) {
     var memUsed = process.memoryUsage().heapUsed / 1024 / 1024

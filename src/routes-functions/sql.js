@@ -1,7 +1,6 @@
 const { Admin } = require('mongodb');
 const mysql = require('mysql');
 const Promise = require("promise")
-var process = require('process');
 const topic = require('../actions/topic');
 const allTopics = require('../actions/allTopics');
 const random = require('../actions/random');
@@ -26,8 +25,6 @@ exports.func = req => {
 
         let query = null
         console.log("request = " + params);
-
-
 
         switch (params[1]) {
             case "owner":
@@ -75,7 +72,6 @@ exports.func = req => {
                 stats(connection, params, resolve, reject)
                 break;
         }
-        // connection.end()
     })
 }
 
