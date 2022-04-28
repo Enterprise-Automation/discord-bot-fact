@@ -6,7 +6,7 @@ module.exports = function (connection, params, resolve, reject) {
             reject(err)
         }
         console.log(arrayToString(result))
-        resolve({ "status": "success", "status_message": "Get owner", "discord_message": arrayToString(result) });
+        resolve({ "status": "success", "status_message": "Get owner", "discord_message": arrayToString(result) + "Feel free to add any facts to the database :)" });
     })
     function arrayToString(array) {
 
