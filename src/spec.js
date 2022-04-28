@@ -1,7 +1,7 @@
 // Bot API action constants
 module.exports = Object.freeze({
     identifier: "facts",
-    actions: ["getById", "topic", "add", "delete", "random", "owner", "actions"],
+    actions: ["topic", "add", "delete", "random", "owner", "actions", "stats", "allTopics"],
     schema: {
         topic: {
             arg_count: 1,
@@ -23,6 +23,14 @@ module.exports = Object.freeze({
             arg_count: 0,
             args: []
         },
+        allTopics: {
+            arg_count: 0,
+            args: []
+        },
+        stats: {
+            arg_count: 0,
+            args: []
+        },
         add: {
             arg_count: 0,
             args: []
@@ -31,18 +39,18 @@ module.exports = Object.freeze({
             arg_count: 0,
             args: []
         },
-        getById: {
-            arg_count: 1,
-            args: [
-                {
-                    name: "name",
-                    type: "number",
-                    min: 1,
-                    max: 15,
-                    pattern: "alphanumeric"
-                }
-            ]
-        },
+        // getById: {
+        //     arg_count: 1,
+        //     args: [
+        //         {
+        //             name: "name",
+        //             type: "number",
+        //             min: 1,
+        //             max: 15,
+        //             pattern: "alphanumeric"
+        //         }
+        //     ]
+        // },
         random: {
             arg_count: 0,
             args: []

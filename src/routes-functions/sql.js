@@ -1,13 +1,23 @@
 const { Admin } = require('mongodb');
 const mysql = require('mysql');
 const Promise = require("promise")
+var process = require('process')
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function arrayToString(array) {
 
+    let stringArray = "Topic: <topic> - number of facts with topic\n---------------------------\n";
+
+    for (let i = 0; i <= array.length - 1; i++) {
+        stringArray = stringArray + "Topic: " + array[i]["topic"] + " - " + array[i]["count(*)"] + "\n"
+    }
+
+    return stringArry;
+}
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -51,7 +61,7 @@ exports.func = req => {
 
             //     });
 
-            // break;
+            //     break;
             case "topic":
                 query = `SELECT * FROM fact_table WHERE topic=?`
                 connection.query(query, params[2], function (err, result, fields) {
@@ -63,10 +73,20 @@ exports.func = req => {
                         resolve({ "status": "success", "status_message": "sending back fact", "discord_message": result[getRandomInt(0, result.length)].fact });
                     }
                     catch (error) {
-                        reject({ "status": "failed", "status_message": "can't resolve query", "discord_message": "Can't find a fact with the topic of " + params[2] + ".Would you like to add one using ____|" + params[2] });
+                        reject({ "status": "failed", "status_message": "can't resolve query", "discord_message": "Can't find a fact with the topic of " + params[2] + ".To view the list of possible topics in use, please use the allTopics function.You could add a fact using <yourfact>|" + params[2] });
                     }
                 });
 
+                break;
+            case "allTopics":
+                query = `SELECT topic, count(*) FROM fact_table GROUP BY topic`
+                connection.query(query, function (err, result) {
+                    if (err) {
+                        reject(err)
+                    }
+                    console.log(arrayToString(result))
+                    resolve({ "status": "success", "status_message": "Get owner", "discord_message": arrayToString(result) });
+                })
                 break;
             case "random":
                 query = `SELECT * FROM fact_table`;
@@ -85,7 +105,7 @@ exports.func = req => {
                 params.shift()
                 params.shift()
                 var fact = params.join(" ").split("|")
-                connection.query(query, [fact[0], fact[1]], function (err, result, fields) {
+                connection.query(query, [fact[0], fact[1].trim()], function (err, result, fields) {
                     if (err) {
                         console.log(err)
                         reject(err)
@@ -115,12 +135,28 @@ exports.func = req => {
                     "status": "success", "status_message": "Get all actions", "discord_message":
 
                         `'Actions'
-                Fact By Topic(JavaScript,History,Animals,EAS,Geography): 'topic topic'
-                Insert New Fact: 'add fact |topic'
+                Fact By Topic: 'topic <topic>'
+                Insert New Fact: 'add <fact>|<topic>'
                 Owner: 'owner' 
                 Random Fact: 'random'
-                Delete Fact (Harrison only) 'delete fact |topic'` });
+                Delete Fact (Harrison only) 'delete <fact>|<topic>'
+                Get all topics: allTopics` });
                 break;
+            case "stats":
+                var memUsed = process.memoryUsage().heapUsed / 1024 / 1024
+                var totalMem = process.memoryUsage().heapTotal / 1024 / 1024
+                resolve({
+                    "status": "success", "status_message": "sending back stats", "discord_message": `
+                Memory Used: ${Math.round(memUsed * 100) / 100} MB
+Memory Total: ${Math.round(totalMem * 100) / 100} MB 
+Memory Remaining: ${Math.round((totalMem - memUsed) * 100) / 100} MB`
+                });
+                console.log(`
+Memory Used: ${Math.round(memUsed * 100) / 100} MB
+Memory Total: ${Math.round(totalMem * 100) / 100} MB 
+Memory Remaining: ${Math.round((totalMem - memUsed) * 100) / 100} MB`)
+
+
         }
         // connection.end()
     })
