@@ -28,7 +28,7 @@ exports.func = req => {
 
         switch (params[1]) {
             case "owner":
-                resolve({ "status": "success", "status_message": "Get owner", "discord_message": "https://tenor.com/view/walter-white-walter-hartwell-white-sr-heisenberg-bryan-cranston-gif-16636350" });
+                resolve({ "status": "success", "status_message": "Get owner", "discord_message": "https://tenor.com/view/who-me-han-solo-star-wars-confused-gif-17230765" });
                 break;
             case "get":
                 get(connection, params, resolve, reject)
