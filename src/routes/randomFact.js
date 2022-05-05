@@ -5,10 +5,14 @@ var connection = mysql.createConnection({
     password: 'example',
     database: 'mysql'
 });
-
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 connection.connect();
 module.exports = function (app) {
-    app.get('/api/facts', (req, res, next) => {
+    app.get('/api/facts/random', (req, res, next) => {
 
 
         // sql to get all facts
@@ -17,16 +21,9 @@ module.exports = function (app) {
                 res.json({ error: "something went wrong." })
             }
 
-            res.json({ facts: result })
+            res.json({ fact: result[getRandomInt(0, result.length)].fact })
 
         });
-
-        // return in the format
-
-
-        // {
-        //     "facts": [{...fact},{...fact},{...fact}]
-        // }
 
     });
 }

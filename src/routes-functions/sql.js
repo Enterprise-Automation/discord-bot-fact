@@ -46,6 +46,10 @@ exports.func = req => {
                 random(connection, params, resolve, reject)
                 break;
             case "add":
+                if (req.get("user") = "max56775684563") {
+                    resolve({ "status": "success", "status_message": "Not Authorised", "discord_message": `User "${req.get("user")}" not authorised to add facts cos he is a neek` });
+                    break;
+                }
                 add(connection, params, resolve, reject)
                 break;
             case "delete":
