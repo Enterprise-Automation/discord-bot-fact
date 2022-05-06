@@ -14,15 +14,15 @@ module.exports = function (app) {
     app.post('/api/facts/topic?topic=', (req, res, next) => {
 
         query = `SELECT * FROM fact_table WHERE topic=?`
-        connection.query(query, req.body.topic, function (err, result, fields) {
+        connection.query(query, [req.body.topic], function (err, result, fields) {
             if (err) {
-                res.json({ error: "something went wrong." })
+                res.json({ error: "Can't find fact with that topic. Sorry." })
             }
             try {
                 res.json({ facts: result[getRandomInt(0, result.length)] })
             }
             catch (error) {
-                res.json({ error: "something went wrong." })
+                res.json({ error: "Can't find fact with that topic. Sorry." })
 
             }
         });
