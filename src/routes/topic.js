@@ -19,8 +19,7 @@ module.exports = function (app) {
                 res.json({ error: "something went wrong." })
             }
             try {
-                console.log(result);
-                res.json({ facts: result })
+                res.json({ facts: result[getRandomInt(0, result.length)] })
             }
             catch (error) {
                 res.json({ error: "something went wrong." })
