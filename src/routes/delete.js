@@ -8,10 +8,8 @@ var connection = mysql.createConnection({
 
 connection.connect();
 module.exports = function (app) {
-    app.post('/api/facts/add', (req, res, next) => {
-        query = `INSERT INTO fact_table
-        (fact,topic) 
-         VALUES (?, ?)`;
+    app.post('/api/facts/delete', (req, res, next) => {
+        query = `DELETE FROM fact_table WHERE fact=? AND topic=?`;
         connection.query(query, [req.body.fact, req.body.topic], function (err, result, fields) {
             if (err) {
                 res.json({ error: "something went wrong." })
